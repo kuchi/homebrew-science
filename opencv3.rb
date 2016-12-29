@@ -3,43 +3,16 @@ require File.expand_path("../Requirements/cuda_requirement", __FILE__)
 class Opencv3 < Formula
   desc "Open source computer vision library, version 3"
   homepage "http://opencv.org/"
-  revision 4
+  revision 5
 
   stable do
-    url "https://github.com/opencv/opencv/archive/3.1.0.tar.gz"
-    sha256 "f00b3c4f42acda07d89031a2ebb5ebe390764a133502c03a511f67b78bbd4fbf"
+    url "https://github.com/opencv/opencv/archive/3.2.0.tar.gz"
+    sha256 "b9d62dfffb8130d59d587627703d5f3e6252dce4a94c1955784998da7a39dd35"
 
     resource "contrib" do
-      url "https://github.com/opencv/opencv_contrib/archive/3.1.0.tar.gz"
-      sha256 "ef2084bcd4c3812eb53c21fa81477d800e8ce8075b68d9dedec90fef395156e5"
+      url "https://github.com/opencv/opencv_contrib/archive/3.2.0.tar.gz"
+      sha256 "1e2bb6c9a41c602904cc7df3f8fb8f98363a88ea564f2a087240483426bf8cbe"
     end
-
-    patch do
-      # patch fixing crash after 100s when using capturing device https://github.com/opencv/opencv/issues/5874
-      # can be removed with next release
-      url "https://github.com/opencv/opencv/commit/a2bda999211e8be9fbc5d40038fdfc9399de31fc.diff"
-      sha256 "c1f83ec305337744455c2b09c83624a7a3710cfddef2f398bb4ac20ea16197e2"
-    end
-
-    patch do
-      # patch fixes build error https://github.com/Homebrew/homebrew-science/issues/3147 when not using --without-opencl
-      # can be removed with next release
-      url "https://github.com/opencv/opencv/commit/c7bdbef5042dadfe032dfb5d80f9b90bec830371.diff"
-      sha256 "106785f8478451575026e9bf3033e418d8509ffb93e62722701fa017dc043d91"
-    end
-
-    patch do
-      # patch fixes build error when including example sources
-      # can be removed with next release
-      url "https://github.com/opencv/opencv/commit/cdb9c60dcb65e04e7c0bd6bef9b86841191c785a.diff"
-      sha256 "a14499a8c16545cf1bb206cfe0ed8a65697100dca9b2ae5274516d1213a1a32b"
-    end
-  end
-
-  bottle do
-    sha256 "a09c8a723c7266f790db768d8a89c50e367071fa4c0015bdf632a94af37194fb" => :el_capitan
-    sha256 "7c089cc50c50aed8a7f53096a61fe538eaec502a8d6e5be6a73f0bfa97c6bc75" => :yosemite
-    sha256 "3492582fc4888a77d132a84444ff4271a4a6d8e49cb274abeb5fa6c0cc95e2df" => :mavericks
   end
 
   head do
@@ -58,6 +31,7 @@ class Opencv3 < Formula
   option "with-contrib", 'Build "extra" contributed modules'
   option "with-cuda", "Build with CUDA v7.0+ support"
   option "with-examples", "Install C and python examples (sources)"
+  option "with-apps", "Build utility applications (used for example to train classifiers, interactive camera calibration, ...). Since this is a keg only formula, apps can be found in /usr/local/Cellar/opencv3/3.2.0_5/bin"
   option "with-java", "Build with Java support"
   option "with-opengl", "Build with OpenGL support (must use --with-qt5)"
   option "with-quicktime", "Use QuickTime for Video I/O instead of QTKit"
@@ -150,6 +124,7 @@ class Opencv3 < Formula
     args << "-DWITH_QT=" + (with_qt ? "ON" : "OFF")
     args << "-DWITH_TBB=" + arg_switch("tbb")
     args << "-DWITH_VTK=" + arg_switch("vtk")
+    args << "-DBUILD_opencv_apps=" + arg_switch("apps")
 
     if build.include? "32-bit"
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
