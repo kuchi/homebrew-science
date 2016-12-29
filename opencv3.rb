@@ -3,7 +3,6 @@ require File.expand_path("../Requirements/cuda_requirement", __FILE__)
 class Opencv3 < Formula
   desc "Open source computer vision library, version 3"
   homepage "http://opencv.org/"
-  revision 5
 
   stable do
     url "https://github.com/opencv/opencv/archive/3.2.0.tar.gz"
@@ -26,8 +25,7 @@ class Opencv3 < Formula
   keg_only "opencv3 and opencv install many of the same files."
 
   deprecated_option "without-tests" => "without-test"
-
-  option "32-bit"
+  deprecated_option "32-bit" => "with-32-bit"
   option "with-contrib", 'Build "extra" contributed modules'
   option "with-cuda", "Build with CUDA v7.0+ support"
   option "with-examples", "Install C and python examples (sources)"
